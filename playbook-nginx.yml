@@ -8,7 +8,7 @@
         state: present
         update_cache: yes
 
-    - name: Request NGINX index page
+    - name: Request NGINX index page from Jenkins Node
       tags: test
       uri:
         url: http://localhost
@@ -19,3 +19,9 @@
       debug:
         var: nginx_index_response.content
       when: nginx_index_response.status == 200
+
+    - name: Save NGINX index page to a file
+      tags: save
+      copy:
+        content: "{{ nginx_index_response.content }}"
+        dest: /tmp/nginx_index.html
